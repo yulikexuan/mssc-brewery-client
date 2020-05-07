@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@DisplayName("CompletableFuture Test - ")
+@DisplayName("Beer Client Test - ")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest
 class BreweryClientIT {
@@ -67,6 +67,16 @@ class BreweryClientIT {
 
         // When
         this.breweryClient.updateBeer(existingBeer.getId(), existingBeer);
+    }
+
+    @Test
+    void test_Given_Beer_Id_When_Delete() {
+
+        // Given
+        UUID id = UUID.randomUUID();
+
+        // When
+        this.breweryClient.deleteExistingBeerById(id);
     }
 
 }///:~

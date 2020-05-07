@@ -2,10 +2,16 @@
   "groups": [
     {
       "name": "sfg.brewery",
-      "type": "guru.sfg.msscbeer.client.web.client.BreweryClient",
-      "sourceType": "guru.sfg.msscbeer.client.web.client.BreweryClient"
+      "type": "guru.sfg.msscbeer.client.config.ConfigProperties",
+      "sourceType": "guru.sfg.msscbeer.client.config.ConfigProperties"
     }
   ],
-  "properties": [],
+  "properties": [
+    {
+      "name": "sfg.brewery.api-host",
+      "type": "java.lang.String",
+      "sourceType": "guru.sfg.msscbeer.client.config.ConfigProperties"
+    }
+  ],
   "hints": []
 }
