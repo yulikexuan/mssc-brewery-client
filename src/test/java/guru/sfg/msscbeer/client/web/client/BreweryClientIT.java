@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.net.URI;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +38,22 @@ class BreweryClientIT {
 
         // Then
         assertThat(beer).isNotNull();
+    }
+
+    @Test
+    void test_Give_BeerDto_When_Save_Then_Get_URI_Back() {
+
+        // Given
+        BeerDto newBeer = BeerDto.builder()
+                .id(UUID.randomUUID())
+                .beerName("Qingdao")
+                .build();
+
+        // When
+        URI uri = this.breweryClient.saveNewBeer(newBeer);
+
+        // Then
+        assertThat(uri.toString()).startsWith(BreweryClient.BEER_PATH_V1);
     }
 
 }///:~
