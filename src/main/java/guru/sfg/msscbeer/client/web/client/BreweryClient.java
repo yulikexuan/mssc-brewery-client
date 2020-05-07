@@ -39,6 +39,10 @@ public class BreweryClient {
         return this.restTemplate.postForLocation(getSaveBeerUrl(), beer);
     }
 
+    public void updateBeer(UUID id, BeerDto beer) {
+        this.restTemplate.put(getBeerByIdUrl(id.toString()), beer);
+    }
+
     public void setApiHost(String apiHost) {
         this.apiHost = apiHost;
     }

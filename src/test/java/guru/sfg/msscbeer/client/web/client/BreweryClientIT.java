@@ -56,4 +56,17 @@ class BreweryClientIT {
         assertThat(uri.toString()).startsWith(BreweryClient.BEER_PATH_V1);
     }
 
+    @Test
+    void test_Give_UUID_And_BeerDto_When_Update() {
+
+        // Given
+        BeerDto existingBeer = BeerDto.builder()
+                .id(UUID.randomUUID())
+                .beerName("Qingdao")
+                .build();
+
+        // When
+        this.breweryClient.updateBeer(existingBeer.getId(), existingBeer);
+    }
+
 }///:~
