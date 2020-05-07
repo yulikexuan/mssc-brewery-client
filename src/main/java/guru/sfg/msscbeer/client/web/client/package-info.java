@@ -1,0 +1,1 @@
+package guru.sfg.msscbeer.client.web.client;
