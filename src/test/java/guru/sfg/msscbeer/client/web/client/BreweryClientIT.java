@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.net.URI;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.StopWatch;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -20,11 +21,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class BreweryClientIT {
 
+    private static StopWatch stopWatch;
+
     @Autowired
     private BreweryClient breweryClient;
 
     @BeforeEach
     void setUp() {
+    }
+
+    @BeforeAll
+    static void beforeAll() {
+        stopWatch = StopWatch.createStarted();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        stopWatch.stop();
+        System.out.printf(">>>>>>> Elapsed Time: %d millis %n",
+                stopWatch.getTime());
     }
 
     @Test
