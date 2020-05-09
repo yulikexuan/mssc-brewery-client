@@ -3,3 +3,8 @@ server:
 sfg:
   brewery:
     apiHost: http://localhost:8081
+logging:
+  level:
+    org:
+      apache:
+        http: debug
