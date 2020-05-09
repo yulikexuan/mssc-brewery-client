@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MsscBreweryClientApplicationIT {
 
     @Test
-    void contextLoads() {
-    }
+    void contextLoads() {}
 
 }///:~
