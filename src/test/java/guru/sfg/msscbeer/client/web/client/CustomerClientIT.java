@@ -53,4 +53,11 @@ public class CustomerClientIT {
         assertThat(location.toString()).startsWith(CustomerClient.CUSTOMER_PATH_V1);
     }
 
+    @Test
+    void test_Port() {
+        System.out.println(this.customerClient.getTestProp());
+        System.out.println(this.customerClient.getLogHttp());
+        System.out.println(this.customerClient.getSaveCustomerUri());
+    }
+
 }///:~

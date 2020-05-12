@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -47,11 +48,27 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class BlockingRestTemplateCustomizer implements RestTemplateCustomizer {
 
-    static final int MAX_TOTAL_OPEN_CONNECTIONS = 100;
-    static final int MAX_PER_ROUTE = 20;
+    private final int maxTotalOpenConnections;
+    private final int maxPerRoute;
+    private final int connectionTimeout;
+    private final int socketTimeout;
 
-    static final int HTTP_CONNECTION_TIMEOUT = 5000;
-    static final int HTTP_SOCKET_TIMEOUT = 5000;
+    private final String hostName;
+    private final int port;
+
+    @Autowired
+    public BlockingRestTemplateCustomizer(
+            SfgBreweryProperties sfgBreweryProperties,
+            HttpClientProperties httpClientProperties) {
+
+        this.hostName = sfgBreweryProperties.getHostName();
+        this.port = sfgBreweryProperties.getPort();
+
+        this.maxTotalOpenConnections = httpClientProperties.getMaxTotalOpen();
+        this.maxPerRoute = httpClientProperties.getMaxPerRoute();
+        this.connectionTimeout = httpClientProperties.getConnectionTimeout();
+        this.socketTimeout = httpClientProperties.getSocketTimeout();
+    }
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
 
@@ -59,22 +76,22 @@ public class BlockingRestTemplateCustomizer implements RestTemplateCustomizer {
                 new PoolingHttpClientConnectionManager();
 
         // Set the maximum number of total open connections
-        connectionManager.setMaxTotal(MAX_TOTAL_OPEN_CONNECTIONS);
+        connectionManager.setMaxTotal(maxTotalOpenConnections);
 
         /*
          * Set the maximum number of concurrent connections per route,
          * which is 2 by default.
          */
-        connectionManager.setDefaultMaxPerRoute(MAX_PER_ROUTE);
+        connectionManager.setDefaultMaxPerRoute(maxPerRoute);
 
-        HttpHost breweryHost = new HttpHost("localhost", 8081);
+        HttpHost breweryHost = new HttpHost(this.hostName, this.port);
 
         /*
          * Set the total number of concurrent connections to a specific route,
          * which is 2 by default.
          */
         connectionManager.setMaxPerRoute(new HttpRoute(breweryHost),
-                MAX_PER_ROUTE / 2);
+                maxPerRoute);
 
         /*
          * The Connection Timeout (http.connection.timeout)
@@ -88,8 +105,8 @@ public class BlockingRestTemplateCustomizer implements RestTemplateCustomizer {
          *   – the time to wait for a connection from the connection manager/pool
          */
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(HTTP_CONNECTION_TIMEOUT)
-                .setSocketTimeout(HTTP_SOCKET_TIMEOUT)
+                .setConnectionRequestTimeout(connectionTimeout)
+                .setSocketTimeout(socketTimeout)
                 .build();
 
         /*

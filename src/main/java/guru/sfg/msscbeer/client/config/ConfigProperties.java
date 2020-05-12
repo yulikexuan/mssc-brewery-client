@@ -4,16 +4,32 @@
 package guru.sfg.msscbeer.client.config;
 
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 
-@Getter
-@Setter
-@ConfigurationProperties(value = "sfg.brewery", ignoreUnknownFields = false)
+@Configuration
 public class ConfigProperties {
 
-    private String apiHost;
+    @Bean
+    @ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = false)
+    public SfgBreweryProperties sfgBrewery() {
+        return new SfgBreweryProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "logging.level.org.apache",
+            ignoreUnknownFields = false)
+    public HttpClientLoggerProperties serverProperties() {
+        return new HttpClientLoggerProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "httpclient.connection",
+            ignoreUnknownFields = false)
+    public HttpClientProperties httpClientProperties() {
+        return new HttpClientProperties();
+    }
 
 }///:~

@@ -4,9 +4,11 @@
 package guru.sfg.msscbeer.client.web.client;
 
 
-import guru.sfg.msscbeer.client.config.ConfigProperties;
+import guru.sfg.msscbeer.client.config.HttpClientLoggerProperties;
+import guru.sfg.msscbeer.client.config.SfgBreweryProperties;
 import guru.sfg.msscbeer.client.web.model.CustomerDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -23,12 +25,19 @@ public class CustomerClient {
     private final RestTemplate restTemplate;
 
     private String apiHost;
+    private String logHttp;
+
+    @Value("${test.prop}")
+    private String testProp;
 
     @Autowired
     public CustomerClient(RestTemplateBuilder restTemplateBuilder,
-                          ConfigProperties configProperties) {
+                          SfgBreweryProperties sfgBreweryProperties,
+                          HttpClientLoggerProperties serverProperties) {
+
         this.restTemplate = restTemplateBuilder.build();
-        this.apiHost = configProperties.getApiHost();
+        this.apiHost = sfgBreweryProperties.getApiHost();
+        this.logHttp = serverProperties.getHttp();
     }
 
     public CustomerDto getCustomerById(UUID id) {
@@ -49,13 +58,21 @@ public class CustomerClient {
         this.restTemplate.delete(id.toString());
     }
 
-    private String getCustomerByIdUrl(UUID id) {
+    String getCustomerByIdUrl(UUID id) {
         return String.format("%s%s/%s", this.apiHost, CUSTOMER_PATH_V1,
                 id.toString());
     }
 
-    private String getSaveCustomerUri() {
+    String getSaveCustomerUri() {
         return this.apiHost + CUSTOMER_PATH_V1;
+    }
+
+    String getLogHttp() {
+        return this.logHttp;
+    }
+
+    String getTestProp() {
+        return this.testProp;
     }
 
 }///:~

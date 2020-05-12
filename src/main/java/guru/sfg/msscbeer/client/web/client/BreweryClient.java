@@ -5,6 +5,7 @@ package guru.sfg.msscbeer.client.web.client;
 
 
 import guru.sfg.msscbeer.client.config.ConfigProperties;
+import guru.sfg.msscbeer.client.config.SfgBreweryProperties;
 import guru.sfg.msscbeer.client.web.model.BeerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -26,9 +27,9 @@ public class BreweryClient {
 
     @Autowired
     public BreweryClient(RestTemplateBuilder restTemplateBuilder,
-                         ConfigProperties configProperties) {
+                         SfgBreweryProperties sfgBreweryProperties) {
         this.restTemplate = restTemplateBuilder.build();
-        this.apiHost = configProperties.getApiHost();
+        this.apiHost = sfgBreweryProperties.getApiHost();
     }
 
     public BeerDto getBeerById(UUID id) {

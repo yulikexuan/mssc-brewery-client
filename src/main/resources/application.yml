@@ -3,8 +3,28 @@ server:
 sfg:
   brewery:
     apiHost: http://localhost:8081
+    hostName: localhost
+    port: 8081
 logging:
   level:
     org:
       apache:
-        http: debug
+        http: info
+test:
+  prop: value
+httpclient:
+  connection:
+    maxTotalOpen: 100
+    maxPerRoute: 20
+    connectionTimeout: 5000
+    socketTimeout: 5000
+
+
+#    static final int MAX_TOTAL_OPEN_CONNECTIONS = 100;
+#    static final int MAX_PER_ROUTE = 20;
+#
+#    static final int HTTP_CONNECTION_TIMEOUT = 5000;
+#    static final int HTTP_SOCKET_TIMEOUT = 5000;
+#
+#    static final String BREWERY_HOST_NAME = "localhost";
+#    static final int BREWERY_HOST_PORT = 8081;
